@@ -1,0 +1,83 @@
+'use client'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+
+export default function StudentLogin() {
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleLogin() {
+    setLoading(true)
+    setError('')
+    const res = await signIn('credentials', { email, password, redirect: false })
+    if (res?.error) { setError('Invalid credentials'); setLoading(false); return }
+    const session = await fetch('/api/auth/session').then(r => r.json())
+    if (session?.user?.role === 'STUDENT') router.push('/student/dashboard')
+    else { setError('Not a student account'); setLoading(false) }
+  }
+
+  return (
+    <div className="min-h-screen flex">
+      {/* Left - Form */}
+      <div className="flex flex-col justify-center w-full max-w-md px-10 bg-white">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
+            <div>
+              <p className="font-bold text-gray-800 leading-none">SchoolPulse</p>
+              <p className="text-xs text-gray-400">Kampala, Uganda</p>
+            </div>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800">Student Portal</h1>
+          <p className="text-sm text-gray-500 mt-1">Enter your details to sign in</p>
+        </div>
+
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        <div className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email e.g student@schoolpulse.com"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            placeholder="Your password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="remember" className="rounded" />
+            <label htmlFor="remember" className="text-sm text-gray-500">Remember me</label>
+          </div>
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className="bg-blue-600 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+          <p className="text-center text-sm text-blue-500 cursor-pointer hover:underline">Forgot password?</p>
+        </div>
+
+        <p className="text-xs text-gray-300 mt-10 text-center">SchoolPulse Student Portal</p>
+      </div>
+
+      {/* Right - Image */}
+      <div className="hidden md:flex flex-1 bg-blue-600 items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-900 opacity-90" />
+        <div className="relative z-10 text-center text-white px-8">
+          <h2 className="text-4xl font-bold mb-4">Welcome Back</h2>
+          <p className="text-blue-200 text-lg">Access your results, fees and timetable</p>
+        </div>
+      </div>
+    </div>
+  )
+}
