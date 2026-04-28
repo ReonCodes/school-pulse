@@ -31,6 +31,9 @@ model Student {
   parentPhone String?
   userId      String  @unique
   user        User    @relation(fields: [userId], references: [id])
+  feeRecords  FeeRecord[]
+  class    Class?  @relation(fields: [classId], references: [id])
+results  Result[]
 }
 
 model Staff {
@@ -39,4 +42,45 @@ model Staff {
   subject String?
   userId  String  @unique
   user    User    @relation(fields: [userId], references: [id])
+}
+
+model FeeRecord {
+  id        String   @id @default(cuid())
+  amount    Float
+  term      Int
+  year      Int
+  paidAt    DateTime @default(now())
+  receiptNo String?
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+}
+
+model Class {
+  id       String    @id @default(cuid())
+  name     String
+  level    String
+  students Student[]
+  results  Result[]
+}
+
+model Result {
+  id        String  @id @default(cuid())
+  marks     Float
+  grade     String
+  subject   String
+  term      Int
+  year      Int
+  studentId String
+  classId   String?
+  student   Student @relation(fields: [studentId], references: [id])
+  class     Class?  @relation(fields: [classId], references: [id])
+}
+model Timetable {
+  id        String @id @default(cuid())
+  day       String
+  period    Int
+  subject   String
+  teacher   String
+  className String
+  time      String
 }

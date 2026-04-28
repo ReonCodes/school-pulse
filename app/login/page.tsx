@@ -9,6 +9,7 @@ export default function StudentLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   async function handleLogin() {
     setLoading(true)
@@ -46,13 +47,22 @@ export default function StudentLogin() {
             onChange={e => setEmail(e.target.value)}
             className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <input
-            type="password"
-            placeholder="Your password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="relative">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    placeholder="Your password"
+    value={password}
+    onChange={e => setPassword(e.target.value)}
+    className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 w-full pr-10"
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-3.5 text-gray-400 text-xs"
+  >
+    {showPassword ? 'Hide' : 'Show'}
+  </button>
+</div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="remember" className="rounded" />
             <label htmlFor="remember" className="text-sm text-gray-500">Remember me</label>
