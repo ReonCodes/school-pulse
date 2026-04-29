@@ -41,20 +41,20 @@ export default function AdminLogin() {
 
         <div className="flex flex-col gap-4">
           <input
-            type="email"
-            placeholder="Admin email address"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500"
-          />
+  type="email"
+  placeholder="Admin email address"
+  value={email}
+  onChange={e => setEmail(e.target.value)}
+  className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 bg-white"
+/>
           <div className="relative">
   <input
-    type={showPassword ? 'text' : 'password'}
-    placeholder="Your password"
-    value={password}
-    onChange={e => setPassword(e.target.value)}
-    className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 w-full pr-10"
-  />
+  placeholder="Your password"
+  type={showPassword ? 'text' : 'password'}
+  value={password}
+  onChange={e => setPassword(e.target.value)}
+  className="border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-purple-500 w-full pr-10 text-gray-900 bg-white"
+/>
   <button
     type="button"
     onClick={() => setShowPassword(!showPassword)}
